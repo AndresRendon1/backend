@@ -1,42 +1,53 @@
-const express = require('express');
-const app = express();
+// pages/index.js
+import axios from 'axios';
+import { useState } from 'react';
 
-// Almacenamiento en memoria de los datos de los superhéroes
-const superheroes = {
-  "Wolverine": {
-    "biography": {
-      "fullName": "John Logan"
-    },
-    "powerstats": {
-      "intelligence": 63,
-      "strength": 32,
-      "speed": 50,
-      "durability": 100,
-      "power": 89,
-      "combat": 100
-    },
-    "images": {
-      "xs": "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/xs/717-wolverine.jpg",
-      "sm": "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/sm/717-wolverine.jpg",
-      "md": "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/md/717-wolverine.jpg",
-      "lg": "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/lg/717-wolverine.jpg"
+export default function Home() {
+  const [heroName, setHeroName] = useState('');
+  const [heroData, setHeroData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const fetchHeroData = async () => {
+    try {
+      setError(null); // Reset error before fetching data
+      const response = await axios.get(`http://localhost:8080/api/superhero?hero=${heroName}`);
+      setHeroData(response.data);
+    } catch (error) {
+      console.error('Error fetching hero data:', error);
+      setHeroData(null);
+      setError('Error fetching hero data. Please try again.');
     }
-  },
-  // Agrega más superhéroes aquí
-};
+  };
 
-// Endpoint para obtener los datos de un superhéroe por nombre
-app.get('/api/superhero', (req, res) => {
-  const heroName = req.query.hero;
-  const superhero = superheroes[heroName];
-  if (!superhero) {
-    return res.status(404).json({ error: 'Superhero not found' });
-  }
-  res.json(superhero);
-});
+  return (
+    <div className="container">
+      <h1>Superhero Search</h1>
+      <input
+        type="text"
+        value={heroName}
+        onChange={(e) => setHeroName(e.target.value)}
+        placeholder="Enter superhero name"
+      />
+      <button onClick={fetchHeroData}>Search</button>
 
-// Inicia el servidor en el puerto 8080
-const PORT = 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {heroData && (
+        <div>
+          <h2>{heroData.name}</h2>
+          <p>Full Name: {heroData.biography.fullName}</p>
+          <h3>Powerstats:</h3>
+          <ul>
+            <li>Intelligence: {heroData.powerstats.intelligence}</li>
+            <li>Strength: {heroData.powerstats.strength}</li>
+            <li>Speed: {heroData.powerstats.speed}</li>
+            <li>Durability: {heroData.powerstats.durability}</li>
+            <li>Power: {heroData.powerstats.power}</li>
+            <li>Combat: {heroData.powerstats.combat}</li>
+          </ul>
+          <img src={heroData.images.md} alt={heroData.name} />
+        </div>
+      )}
+    </div>
+  );
+}
