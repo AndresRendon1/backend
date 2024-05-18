@@ -128,6 +128,26 @@ var superheroes = map[string]Superhero{
 			Lg string `json:"lg"`
 		}{Xs: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/xs/253-wolverine.jpg", Sm: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/sm/253-wolverine.jpg", Md: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/md/253-wolverine.jpg", Lg: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/lg/253-wolverine.jpg"},
 	},
+	"Thor": {
+		Name: "Thor",
+		Biography: struct {
+			FullName string `json:"fullName"`
+		}{FullName: "Thor odinson"},
+		Powerstats: struct {
+			Intelligence int `json:"intelligence"`
+			Strength     int `json:"strength"`
+			Speed        int `json:"speed"`
+			Durability   int `json:"durability"`
+			Power        int `json:"power"`
+			Combat       int `json:"combat"`
+		}{Intelligence: 69, Strength: 100, Speed: 83, Durability: 100, Power: 100, Combat: 100},
+		Images: struct {
+			Xs string `json:"xs"`
+			Sm string `json:"sm"`
+			Md string `json:"md"`
+			Lg string `json:"lg"`
+		}{Xs: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/xs/659-thor.jpg", Sm: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/sm/659-thor.jpg", Md: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/md/659-thor.jpg", Lg: "https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/images/lg/659-thor.jpg"},
+	},
 }
 
 func main() {
